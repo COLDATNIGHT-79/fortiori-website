@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Games — Links</title>
+  <link rel="icon" type="image/x-icon" href="game.ico">
+  <link href="https://fonts.cdnfonts.com/css/alagard" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --accent: #7dd3fc;
+      --text: #e6eef6;
+      --night-sky-top: #191960;
+      --night-sky-bottom: #3c2d64;
+      --border-light: #a7b5d3;
+      --border-dark: #3a4151;
+      --bg-dark: #0f1720;
+      --pink-accent: #ff80c0;
+    }
+    
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:'Alagard',sans-serif;
+      overflow-x:hidden;
+      image-rendering: pixelated; /* Ensures images look sharp */
+    }
+    
+    body{
+      background: linear-gradient(180deg, var(--night-sky-top) 0%, var(--night-sky-bottom) 100%);
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      position:relative;
+      min-height:100vh;
+    }
+    
+    #background-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    /* MODIFICATION: Interactive title container */
+    .title-container {
+      position: relative;
+      z-index: 10;
+      margin-bottom: 20px; /* Reduced margin to move it up */
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease-out;
+    }
+    
+    .title-container img {
+      max-width: 400px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 4px 0px rgba(0,0,0,0.5));
+      transition: all 0.15s ease-out;
+    }
+    
+    /* MODIFICATION: New subtitle style */
+    .title-subtitle {
+      font-size: 1.5rem;
+      color: var(--text);
+      text-shadow: 2px 2px 0 var(--bg-dark);
+      margin-top: 10px;
+      transition: all 0.15s ease-out;
+    }
+    
+    /* MODIFICATION: New hover and active effects for title */
+    .title-container:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+    .title-container:hover img {
+       filter: drop-shadow(0 6px 0px rgba(0,0,0,0.4));
+    }
+    .title-container:hover .title-subtitle {
+       text-shadow: 2px 4px 0 var(--bg-dark);
+    }
+    
+    .title-container:active {
+      transform: translateY(-1px) scale(1.0);
+    }
+     .title-container:active img {
+       filter: drop-shadow(0 2px 0px rgba(0,0,0,0.5));
+    }
+    
+    .wrap{
+      width:min(500px,90%);
+      text-align:center;
+      position:relative;
+      z-index:10;
+      padding: 32px 24px;
+      border: 4px solid var(--border-dark);
+      box-shadow: 
+        inset 0 0 0 4px var(--bg-dark), 
+        0 0 0 4px var(--border-dark);
+      background-image: 
+        linear-gradient(45deg, rgba(0,0,0,0.25) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.25) 75%),
+        linear-gradient(45deg, rgba(0,0,0,0.25) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.25) 75%);
+      background-color: rgba(30, 41, 59, 0.7);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
+    }
+
+    .steam-btn{
+      display:inline-block;
+      padding:12px 24px;
+      margin-bottom:32px;
+      background: var(--accent);
+      color: var(--bg-dark);
+      font-weight:700;
+      font-size:1.2rem;
+      text-decoration:none;
+      border: 2px solid var(--border-dark);
+      box-shadow: 4px 4px 0px 0px var(--border-dark);
+      transition: all 0.1s ease-out;
+      transform: translate(0, 0);
+    }
+    
+    .steam-btn:hover {
+      background: #a1e4fd;
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px 0px var(--border-dark);
+    }
+    
+    .steam-btn:active {
+      transform: translate(4px, 4px);
+      box-shadow: 0 0 0 0 var(--border-dark);
+    }
+
+    .social-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      justify-content:center;
+      margin-bottom: 24px;
+    }
+    
+    .icon-btn{
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: var(--bg-dark);
+      border: 2px solid var(--border-light);
+      color:var(--text);
+      font-size:1.5rem;
+      text-decoration:none;
+      transition: all 0.15s ease-out;
+    }
+    
+    .icon-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 3px 0 0 var(--border-light);
+      background: #3a4151;
+    }
+
+    .icon-btn:active {
+      transform: translateY(-1px);
+      box-shadow: 0 1px 0 0 var(--border-light);
+    }
+    
+    .muted{
+      opacity:.85;
+      font-size:14px;
+      margin-bottom:16px;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.7);
+    }
+    
+    /* MODIFICATION: New credit link style */
+    .credit-link {
+      margin-top: 24px;
+      font-size: 1rem;
+    }
+    
+    .credit-link a {
+      color: var(--pink-accent);
+      text-decoration: none;
+      text-shadow: 1px 1px 0 var(--bg-dark);
+      transition: all 0.15s ease-out;
+    }
+    
+    .credit-link a:hover {
+      color: #ffb3d9;
+      text-decoration: underline;
+    }
+    
+    footer{
+      color:rgba(230,238,246,0.8);
+      font-size:13px;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.7);
+    }
+    
+    .lightning-flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(200, 200, 220, 0.1);
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+    
+    @media (max-width: 768px) {
+      body { padding: 20px; }
+      .title-container img { max-width: 300px; }
+      .wrap { padding: 24px 16px; }
+      .steam-btn { padding: 10px 20px; font-size: 1.1rem; }
+      .icon-btn { width: 42px; height: 42px; font-size: 1.3rem; }
+      .social-links { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="background-canvas"></canvas>
+  <div class="lightning-flash" id="lightning-flash"></div>
+  
+  <div class="title-container">
+    <img src="title.png" alt="Game Title">
+    <p class="title-subtitle">The relentless number mulitplication puzzle game</p>
+  </div>
+  
+  <div class="wrap">
+    <a class="steam-btn" href="" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-steam"></i> Available on Steam
+    </a>
+
+    <div class="social-links">
+      <a class="icon-btn" href="https://x.com/AllHeresy89790" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+        <i class="fab fa-x-twitter"></i>
+      </a>
+      <a class="icon-btn" href="https://www.instagram.com/79.games_real/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a class="icon-btn" href="https://www.youtube.com/watch?v=a501Bjc8Yew" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <i class="fab fa-youtube"></i>
+      </a>
+      <a class="icon-btn" href="https://www.reddit.com/user/AJ_COOL_79/" target="_blank" rel="noopener noreferrer" aria-label="Reddit">
+        <i class="fab fa-reddit"></i>
+      </a>
+    </div>
+
+    <p class="muted">only socials i am on!</p>
+    
+    <div class="credit-link">
+        <a href="https://thingscolddid.vercel.app/" target="_blank" rel="noopener noreferrer">more stuff i did</a>
+    </div>
+    
+    
+  </div>
+
+  <script>
+    // Enhanced night rain animation system (JavaScript remains unchanged)
+    class NightRainBackground {
+      constructor() {
+        this.canvas = document.getElementById('background-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.lightningFlash = document.getElementById('lightning-flash');
+        
+        // Initialize arrays first
+        this.stars = [];
+        this.clouds = [];
+        this.raindrops = [];
+        this.landscapeLayers = [];
+        this.lightning = { active: false, duration: 0, cooldown: 0 };
+        
+        // Night sky colors
+        this.skyTopColor = { r: 25, g: 25, b: 60 };
+        this.skyBottomColor = { r: 60, g: 45, b: 100 };
+        
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        
+        this.init();
+        this.animate();
+      }
+      
+      resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
+        
+        // Reinitialize elements on resize
+        if (this.stars && this.stars.length > 0) {
+          this.init();
+        }
+      }
+      
+      init() {
+        // Create stars
+        this.stars = [];
+        for (let i = 0; i < 200; i++) {
+          this.stars.push({
+            x: Math.random() * this.width,
+            y: Math.random() * (this.height * 0.6), // Only in upper part of sky
+            radius: Math.random() < 0.7 ? 1 : 2,
+            alpha: 0.3 + Math.random() * 0.7,
+            baseAlpha: 0.3 + Math.random() * 0.7,
+            twinkleSpeed: 0.02 + Math.random() * 0.05,
+            cycle: Math.random() * Math.PI * 2
+          });
+        }
+        
+        // Create much thinner, wispy clouds
+        this.clouds = [];
+        for (let i = 0; i < 6; i++) {
+          this.clouds.push({
+            x: Math.random() * (this.width + 600) - 300,
+            y: 30 + Math.random() * (this.height * 0.25),
+            width: 200 + Math.random() * 300,
+            height: 15 + Math.random() * 25, // Much thinner
+            speed: 0.3 + Math.random() * 0.4,
+            opacity: 0.2 + Math.random() * 0.25, // More transparent
+            segments: []
+          });
+        }
+        
+        // Initialize cloud segments for wispy effect
+        this.clouds.forEach(cloud => {
+          cloud.segments = [];
+          for (let i = 0; i < 8; i++) {
+            cloud.segments.push({
+              x: Math.random() * cloud.width,
+              y: Math.random() * cloud.height,
+              width: 20 + Math.random() * 40,
+              height: 8 + Math.random() * 12,
+              opacity: 0.3 + Math.random() * 0.4
+            });
+          }
+        });
+        
+        // Create more raindrops
+        this.raindrops = [];
+        for (let i = 0; i < 400; i++) {
+          this.raindrops.push({
+            x: Math.random() * (this.width + 100) - 50,
+            y: Math.random() * this.height - this.height,
+            speed: 5 + Math.random() * 7,
+            length: 10 + Math.random() * 12,
+            opacity: 0.5 + Math.random() * 0.4,
+            wind: Math.random() * 2 - 1
+          });
+        }
+        
+        // Create better landscape silhouette - much lower
+        this.createLandscapeLayers();
+      }
+      
+      createLandscapeLayers() {
+        this.landscapeLayers = [];
+        const mountainStart = this.height * 0.65; // Push mountains much lower
+        
+        // Background hills - very distant
+        let bgPoints = [];
+        for (let x = 0; x <= this.width; x += 25) {
+          let y = mountainStart + Math.sin(x * 0.002) * 20 + Math.sin(x * 0.005) * 10;
+          if (Math.random() < 0.05) y -= Math.random() * 30; // Gentle peaks
+          bgPoints.push({ x, y });
+        }
+        this.landscapeLayers.push({ 
+          points: bgPoints, 
+          depth: 0.2,
+          color: { r: 30, g: 25, b: 45 }
+        });
+        
+        // Midground hills
+        let midPoints = [];
+        for (let x = 0; x <= this.width; x += 20) {
+          let y = mountainStart + 40 + Math.sin(x * 0.003) * 35 + Math.sin(x * 0.008) * 15;
+          if (Math.random() < 0.08) y -= Math.random() * 60;
+          midPoints.push({ x, y });
+        }
+        this.landscapeLayers.push({ 
+          points: midPoints, 
+          depth: 0.5,
+          color: { r: 20, g: 15, b: 35 }
+        });
+        
+        // Foreground hills - closest
+        let fgPoints = [];
+        for (let x = 0; x <= this.width; x += 15) {
+          let y = mountainStart + 80 + Math.sin(x * 0.004) * 45 + Math.sin(x * 0.01) * 20;
+          if (Math.random() < 0.12) y -= Math.random() * 80; // More dramatic peaks
+          fgPoints.push({ x, y });
+        }
+        this.landscapeLayers.push({ 
+          points: fgPoints, 
+          depth: 0.9,
+          color: { r: 15, g: 10, b: 25 }
+        });
+      }
+      
+      drawSkyGradient() {
+        const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
+        gradient.addColorStop(0, `rgb(${this.skyTopColor.r}, ${this.skyTopColor.g}, ${this.skyTopColor.b})`);
+        gradient.addColorStop(1, `rgb(${this.skyBottomColor.r}, ${this.skyBottomColor.g}, ${this.skyBottomColor.b})`);
+        
+        this.ctx.fillStyle = gradient;
+        this.ctx.fillRect(0, 0, this.width, this.height);
+      }
+      
+      updateStars() {
+        if (!this.stars || !Array.isArray(this.stars)) return;
+        
+        this.stars.forEach(star => {
+          star.cycle += star.twinkleSpeed;
+          star.alpha = star.baseAlpha * (0.5 * Math.sin(star.cycle) + 0.5);
+        });
+      }
+      
+      drawStars() {
+        if (!this.stars || !Array.isArray(this.stars)) return;
+        
+        this.stars.forEach(star => {
+          this.ctx.globalAlpha = star.alpha * 0.8; // Slightly dimmer for atmosphere
+          this.ctx.fillStyle = 'rgb(240, 240, 255)';
+          this.ctx.beginPath();
+          this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          this.ctx.fill();
+        });
+        this.ctx.globalAlpha = 1;
+      }
+      
+      updateClouds() {
+        if (!this.clouds || !Array.isArray(this.clouds)) return;
+        
+        this.clouds.forEach(cloud => {
+          cloud.x -= cloud.speed;
+          if (cloud.x + cloud.width < -100) {
+            cloud.x = this.width + Math.random() * 300;
+            cloud.y = 30 + Math.random() * (this.height * 0.25);
+          }
+        });
+      }
+      
+      drawClouds() {
+        if (!this.clouds || !Array.isArray(this.clouds)) return;
+        
+        this.clouds.forEach(cloud => {
+          if (!cloud.segments || !Array.isArray(cloud.segments)) return;
+          
+          // Draw wispy, thin cloud segments
+          cloud.segments.forEach(segment => {
+            this.ctx.globalAlpha = cloud.opacity * segment.opacity * 0.6;
+            this.ctx.fillStyle = 'rgb(90, 95, 110)';
+            
+            // Create soft, wispy appearance
+            const gradient = this.ctx.createRadialGradient(
+              cloud.x + segment.x + segment.width/2, 
+              cloud.y + segment.y + segment.height/2, 
+              0,
+              cloud.x + segment.x + segment.width/2, 
+              cloud.y + segment.y + segment.height/2, 
+              Math.max(segment.width, segment.height)
+            );
+            gradient.addColorStop(0, 'rgba(90, 95, 110, 0.8)');
+            gradient.addColorStop(0.7, 'rgba(90, 95, 110, 0.3)');
+            gradient.addColorStop(1, 'rgba(90, 95, 110, 0)');
+            
+            this.ctx.fillStyle = gradient;
+            this.ctx.fillRect(
+              cloud.x + segment.x, 
+              cloud.y + segment.y, 
+              segment.width, 
+              segment.height
+            );
+          });
+        });
+        this.ctx.globalAlpha = 1;
+      }
+      
+      updateRain() {
+        if (!this.raindrops || !Array.isArray(this.raindrops)) return;
+        
+        this.raindrops.forEach(drop => {
+          drop.x += drop.wind; // Individual wind effect
+          drop.y += drop.speed;
+          
+          if (drop.y > this.height + 30) {
+            drop.y = -drop.length - Math.random() * 300;
+            drop.x = Math.random() * (this.width + 100) - 50;
+            drop.wind = Math.random() * 2 - 1;
+          }
+        });
+      }
+      
+      drawRain() {
+        if (!this.raindrops || !Array.isArray(this.raindrops)) return;
+        
+        this.raindrops.forEach(drop => {
+          this.ctx.globalAlpha = drop.opacity * 0.8;
+          this.ctx.strokeStyle = 'rgba(120, 160, 255, 0.8)';
+          this.ctx.lineWidth = 1;
+          
+          this.ctx.beginPath();
+          this.ctx.moveTo(drop.x, drop.y);
+          this.ctx.lineTo(drop.x + drop.wind * 0.5, drop.y + drop.length);
+          this.ctx.stroke();
+        });
+        this.ctx.globalAlpha = 1;
+      }
+      
+      updateLightning() {
+        if (this.lightning.cooldown > 0) {
+          this.lightning.cooldown--;
+        }
+        
+        if (this.lightning.active) {
+          this.lightning.duration--;
+          if (this.lightning.duration <= 0) {
+            this.lightning.active = false;
+            this.lightningFlash.style.opacity = '0';
+          }
+        } else if (this.lightning.cooldown <= 0 && Math.random() < 0.0008) { // Less frequent
+          this.triggerLightning();
+        }
+      }
+      
+      triggerLightning() {
+        this.lightning.active = true;
+        this.lightning.duration = 3;
+        this.lightning.cooldown = 300 + Math.random() * 400; // Longer cooldown
+        this.lightningFlash.style.opacity = '1';
+        
+        // Quick fade out
+        setTimeout(() => {
+          this.lightningFlash.style.opacity = '0';
+        }, 80);
+      }
+      
+      drawLandscape() {
+        if (!this.landscapeLayers || !Array.isArray(this.landscapeLayers)) return;
+        
+        this.landscapeLayers.forEach((layer, index) => {
+          if (!layer || !layer.points || !Array.isArray(layer.points)) return;
+          
+          const color = layer.color;
+          const alpha = 0.6 + layer.depth * 0.4;
+          
+          this.ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
+          this.ctx.globalAlpha = alpha;
+          
+          this.ctx.beginPath();
+          this.ctx.moveTo(0, this.height);
+          
+          layer.points.forEach((point, i) => {
+            if (i === 0) {
+              this.ctx.lineTo(point.x, point.y);
+            } else {
+              // Smooth curves between points
+              const prevPoint = layer.points[i - 1];
+              const cpx = (prevPoint.x + point.x) / 2;
+              const cpy = (prevPoint.y + point.y) / 2;
+              this.ctx.quadraticCurveTo(prevPoint.x, prevPoint.y, cpx, cpy);
+            }
+          });
+          
+          this.ctx.lineTo(this.width, this.height);
+          this.ctx.closePath();
+          this.ctx.fill();
+        });
+        this.ctx.globalAlpha = 1;
+      }
+      
+      animate() {
+        // Clear canvas
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        
+        // Draw sky gradient
+        this.drawSkyGradient();
+        
+        // Update and draw stars
+        this.updateStars();
+        this.drawStars();
+        
+        // Update and draw thin clouds
+        this.updateClouds();
+        this.drawClouds();
+        
+        // Update and draw rain
+        this.updateRain();
+        this.drawRain();
+        
+        // Update lightning
+        this.updateLightning();
+        
+        // Draw landscape silhouette much lower
+        this.drawLandscape();
+        
+        requestAnimationFrame(() => this.animate());
+      }
+    }
+    
+    // Initialize the background animation
+    document.addEventListener('DOMContentLoaded', () => {
+      new NightRainBackground();
+    });
+    
+  </script>
+</body>
+</html>
