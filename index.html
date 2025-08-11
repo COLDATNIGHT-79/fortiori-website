@@ -24,7 +24,7 @@
       margin:0;
       font-family:'Alagard',sans-serif;
       overflow-x:hidden;
-      image-rendering: pixelated; /* Ensures images look sharp */
+      image-rendering: pixelated;
     }
     
     body{
@@ -34,7 +34,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding:32px;
+      padding:16px; /* Reduced base padding for mobile */
       position:relative;
       min-height:100vh;
     }
@@ -49,11 +49,10 @@
       pointer-events: none;
     }
     
-    /* MODIFICATION: Interactive title container */
     .title-container {
       position: relative;
       z-index: 10;
-      margin-bottom: 20px; /* Reduced margin to move it up */
+      margin-bottom: 20px;
       text-align: center;
       cursor: pointer;
       transition: transform 0.15s ease-out;
@@ -68,7 +67,6 @@
       transition: all 0.15s ease-out;
     }
     
-    /* MODIFICATION: New subtitle style */
     .title-subtitle {
       font-size: 1.5rem;
       color: var(--text);
@@ -77,7 +75,6 @@
       transition: all 0.15s ease-out;
     }
     
-    /* MODIFICATION: New hover and active effects for title */
     .title-container:hover {
       transform: translateY(-4px) scale(1.02);
     }
@@ -96,7 +93,7 @@
     }
     
     .wrap{
-      width:min(500px,90%);
+      width:min(500px, 100%); /* Changed 90% to 100% for better edge-to-edge on mobile */
       text-align:center;
       position:relative;
       z-index:10;
@@ -179,7 +176,6 @@
       text-shadow: 2px 2px 0 rgba(0,0,0,0.7);
     }
     
-    /* MODIFICATION: New credit link style */
     .credit-link {
       margin-top: 24px;
       font-size: 1rem;
@@ -201,6 +197,7 @@
       color:rgba(230,238,246,0.8);
       font-size:13px;
       text-shadow: 2px 2px 0 rgba(0,0,0,0.7);
+      margin-top: 8px; /* Added spacing */
     }
     
     .lightning-flash {
@@ -216,14 +213,43 @@
       transition: opacity 0.1s;
     }
     
-    @media (max-width: 768px) {
-      body { padding: 20px; }
-      .title-container img { max-width: 300px; }
-      .wrap { padding: 24px 16px; }
-      .steam-btn { padding: 10px 20px; font-size: 1.1rem; }
-      .icon-btn { width: 42px; height: 42px; font-size: 1.3rem; }
-      .social-links { gap: 12px; }
+    /* ======================================= */
+    /* == ENHANCED MOBILE OPTIMIZATION      == */
+    /* ======================================= */
+    
+    @media (max-width: 500px) {
+      .title-container img { 
+        max-width: 80%; /* Use percentage for more fluid scaling */
+      }
+      .title-subtitle {
+        font-size: 1.3rem; /* Slightly smaller subtitle on mobile */
+      }
+      .wrap { 
+        padding: 24px 16px; 
+      }
+      .steam-btn { 
+        padding: 12px 20px; 
+        font-size: 1.1rem; 
+      }
+      .icon-btn { 
+        width: 48px;  /* Ensure touch targets are large enough */
+        height: 48px; 
+        font-size: 1.5rem;
+      }
+      .social-links { 
+        gap: 12px; 
+      }
+      .muted {
+        font-size: 12px;
+      }
+      .credit-link {
+        font-size: 0.9rem;
+      }
+      footer {
+        font-size: 11px;
+      }
     }
+    
   </style>
 </head>
 <body>
@@ -232,7 +258,7 @@
   
   <div class="title-container">
     <img src="title.png" alt="Game Title">
-    <p class="title-subtitle">The relentless number mulitplication puzzle game</p>
+    <p class="title-subtitle">Official Website</p>
   </div>
   
   <div class="wrap">
@@ -241,27 +267,27 @@
     </a>
 
     <div class="social-links">
-      <a class="icon-btn" href="https://x.com/AllHeresy89790" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+      <a class="icon-btn" href="" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
         <i class="fab fa-x-twitter"></i>
       </a>
-      <a class="icon-btn" href="https://www.instagram.com/79.games_real/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <a class="icon-btn" href="" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <i class="fab fa-instagram"></i>
       </a>
-      <a class="icon-btn" href="https://www.youtube.com/watch?v=a501Bjc8Yew" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      <a class="icon-btn" href="" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
         <i class="fab fa-youtube"></i>
       </a>
-      <a class="icon-btn" href="https://www.reddit.com/user/AJ_COOL_79/" target="_blank" rel="noopener noreferrer" aria-label="Reddit">
-        <i class="fab fa-reddit"></i>
+      <a class="icon-btn" href="" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+        <i class="fab fa-discord"></i>
       </a>
     </div>
 
-    <p class="muted">only socials i am on!</p>
+    <p class="muted">Only official links. Nothing else.</p>
     
     <div class="credit-link">
-        <a href="https://thingscolddid.vercel.app/" target="_blank" rel="noopener noreferrer">more stuff i did</a>
+        <a href="https://coldatnight.io" target="_blank" rel="noopener noreferrer">a game by coldatnight</a>
     </div>
     
-    
+    <footer>Made with ❤️ — replace the <code>href</code>s above with your official outlets.</footer>
   </div>
 
   <script>
